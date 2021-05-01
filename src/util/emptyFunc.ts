@@ -1,0 +1,2 @@
+const emptyFunction = () => {};
+export { emptyFunction };
