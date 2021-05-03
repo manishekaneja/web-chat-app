@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { projectRealTime, userCollectionRef } from "..";
+import { action$setLink } from "../redux/reducers/links";
 import { action$setUser } from "../redux/reducers/user";
 
 function useProfileWatcher() {
@@ -30,6 +31,21 @@ function useProfileWatcher() {
               profilePhoto: "",
               ...userObject.data(),
             };
+            const searchMap: Record<
+              string,
+              "friend" | "recievedRequest" | "sendRequest"
+            > = {};
+
+            userData.friends.forEach((singlePerson) => {
+              searchMap[singlePerson.email] = "friend";
+            });
+            userData.pendingRequest.forEach((singlePerson) => {
+              searchMap[singlePerson.email] = "recievedRequest";
+            });
+            userData.sendRequest.forEach((singlePerson) => {
+              searchMap[singlePerson.email] = "sendRequest";
+            });
+            dispatch(action$setLink(searchMap));
             dispatch(action$setUser(userData));
           }
         });
