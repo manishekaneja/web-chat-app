@@ -1,21 +1,10 @@
-type UserPublicInfo = {
-  id: string;
-  name: string;
-  email: string;
-  profile: string;
-};
+type Initial$UserState = User;
 
-type UserInfo = UserPublicInfo & {
-  friends: UserPublicInfo[];
-  pendingRequest: UserPublicInfo[];
-  sendRequest: UserPublicInfo[];
-};
-
-type Reducer$ApplicationState = {
+type Initial$ApplicationState = {
   isLoggedIn: boolean;
 };
 
 type RootState = {
-  user: UserInfo;
-  application: Reducer$ApplicationState;
+  user: Initial$UserState;
+  application: Initial$ApplicationState;
 };

@@ -1,12 +1,12 @@
 import { FC } from "react";
-import { ChatListItem } from "../chatListItem/ChatListItem";
+import { ViewUserProfile } from "../chatListItem/ViewUserProfile";
 
 export const LoadingListPlaceholder: FC<NoProps> = () => {
   return (
     <>
-      <ChatListItem loading={true} />
-      <ChatListItem loading={true} />
-      <ChatListItem loading={true} />
+      <ViewUserProfile loading={true} />
+      <ViewUserProfile loading={true} />
+      <ViewUserProfile loading={true} />
     </>
   );
 };

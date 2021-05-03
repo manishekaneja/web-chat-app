@@ -1,4 +1,11 @@
-type RoutesTypes = "home" | "chat" | "contact" | "request" | "user" | "login";
+type RoutesTypes =
+  | "home"
+  | "chat"
+  | "contact"
+  | "request"
+  | "user"
+  | "login"
+  | "room";
 const Routes: Record<RoutesTypes, string> = {
   chat: "/chat",
   contact: "/contact",
@@ -6,6 +13,7 @@ const Routes: Record<RoutesTypes, string> = {
   request: "/request",
   user: "/user",
   login: "/login",
+  room: "/room",
 };
 
 export { Routes };

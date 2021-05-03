@@ -1,13 +1,12 @@
-import { FC, Fragment, useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
+import { FC, useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import { ViewUserProfile } from "../components/chatListItem/ViewUserProfile";
-import { LoadingListPlaceholder } from "../components/loading/LoadingListPlaceholder";
-import SearchInput from "../components/search/SearchInput";
+import { Header } from "../components/header/Header";
+import SearchSection from "../components/search/SearchSection";
 import { AddUserIcon } from "../Icons/AddUserIcon";
-import { CrossIcon } from "../Icons/CrossIcon";
-import { searchForContact } from "../redux/thunk/searchForContact";
+import { getUserInfoThunk } from "../redux/thunk/getUserInfoThunk";
 
 const RequestDefaultLayout = () => (
   <div className="flex items-center justify-end flex-col h-96">
@@ -20,85 +19,72 @@ const RequestDefaultLayout = () => (
   </div>
 );
 
-const NotFoundLayout = () => (
-  <div className="flex items-center justify-end flex-col h-96">
-    <h3 className="text-green-900 opacity-70 mb-10">
-      <CrossIcon size={100} />
-    </h3>
-    <p className="text-center text-green-900 opacity-70 font-bold">
-      Can't find the results you are searching for
-    </p>
-  </div>
-);
-
 const RequestScreen: FC<NoProps> = () => {
-  const dispatch = useDispatch<ThunkDispatch<RootState, void, AnyAction>>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [queryResult, setQueryResult] = useState<UserInfo[]>([]);
-  const [isSearching, setIsSearching] = useState<boolean>(false);
-  const onTypeQuery = useCallback(
-    (query: string) => {
-      setIsSearching(query.trim().length > 0);
-      if (query.trim().length > 0) {
-        dispatch(searchForContact(query.trim()))
-          .then(({ payload }) => {
-            setQueryResult(payload as UserInfo[]);
-          })
-          .catch((error) => {
-            console.log(error.message);
-          })
-          .finally(() => setIsLoading(false));
-      } else {
-        setQueryResult([]);
-      }
-    },
-    [dispatch]
+  const { pendingRequest, sendRequest } = useSelector(
+    (state: RootState) => state.user
   );
-  const setLoader = useCallback(() => setIsLoading(true), []);
-  const resetLoader = useCallback(() => {
-    setIsSearching(false);
-    setIsLoading(false);
-  }, []);
+  const { isLoggedIn } = useSelector((state: RootState) => state.application);
+  const dispatch = useDispatch<ThunkDispatch<RootState, void, AnyAction>>();
+  useEffect(() => {
+    dispatch(getUserInfoThunk());
+  }, [dispatch]);
 
-  const renderSearchView = useCallback((queryResult: UserInfo[]) => {
-    return (
-      <>
-        {queryResult.length > 0 ? (
-          queryResult.map((singlePerson) => (
-            <ViewUserProfile
-              key={singlePerson.id}
-              loading={isLoading}
-              currentState="unknown"
-              data={singlePerson}
-            />
-          ))
-        ) : (
-          <NotFoundLayout />
-        )}
-      </>
-    );
-  }, []);
-
-  const renderRenderRequestView = useCallback(() => {}, []);
+  const renderRequestView = useCallback(
+    (pending: PublicProfile[], send: PublicProfile[]) => (
+      showDefault: boolean
+    ) => {
+      if (pending.length <= 0 && send.length <= 0 && showDefault) {
+        return <RequestDefaultLayout />;
+      }
+      return (
+        <>
+          {pending.length > 0 && (
+            <div className="relative">
+              <div className="sticky top-14 bg-white shadow">
+                <h2 className=" text-green-700 text-base px-2 py-2 bg-green-700 bg-opacity-10 border-b border-green-700 font-bold">
+                  Pending Request
+                </h2>
+              </div>
+              {pending.map((singlePerson) => (
+                <ViewUserProfile
+                  key={singlePerson.id}
+                  loading={false}
+                  currentState="recievedRequest"
+                  data={singlePerson}
+                />
+              ))}
+            </div>
+          )}
+          {send.length > 0 && (
+            <div className="">
+              <div className="sticky top-14 bg-white shadow">
+                <h2 className=" text-green-700 text-base px-2 py-2 bg-green-700 bg-opacity-10 border-b border-green-700 font-bold">
+                  Send Request
+                </h2>
+              </div>
+              {send.map((singlePerson) => (
+                <ViewUserProfile
+                  key={singlePerson.id}
+                  loading={false}
+                  currentState="sendRequest"
+                  data={singlePerson}
+                />
+              ))}
+            </div>
+          )}
+        </>
+      );
+    },
+    []
+  );
   return (
-    <Fragment>
-      <div className="flex-1 w-full">
-        <SearchInput
-          onChange={setLoader}
-          onClear={resetLoader}
-          debouncedChange={onTypeQuery}
-          debouncedTime={700}
-          loading={isLoading}
-        />
-        {isLoading ? (
-          <LoadingListPlaceholder />
-        ) : isSearching ? (
-          renderSearchView(queryResult)
-        ) : (
-          <RequestDefaultLayout />
-        )}
-      </div>
-    </Fragment>
+    <>
+      {isLoggedIn && <Header />}
+
+      <SearchSection
+        rendererFunc={renderRequestView(pendingRequest, sendRequest)}
+      />
+    </>
   );
 };
 

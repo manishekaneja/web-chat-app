@@ -1,8 +1,8 @@
 import { FC, useCallback, useRef, useState } from "react";
+import useDebounce from "../../hooks/useDebounce";
 import { CrossIcon } from "../../Icons/CrossIcon";
 import { LoaderIcon } from "../../Icons/LoaderIcon";
 import { SearchIcon } from "../../Icons/SearchIcon";
-import debounce from "../../util/debounce";
 import { emptyFunction } from "../../util/emptyFunc";
 
 const SearchInput: FC<SearrchInputProps> = ({
@@ -14,15 +14,12 @@ const SearchInput: FC<SearrchInputProps> = ({
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [queryString, setQueryString] = useState<string>("");
-  const deboundedChange = useCallback(
-    debounce(debouncedChange, debouncedTime),
-    [debouncedTime, debouncedChange]
-  );
+  const deboundedChange = useDebounce(debouncedChange, debouncedTime);
   const onValueChange = useCallback(
-    ({ target: { value } }) => {
-      setQueryString(value.trim());
-      onChange(value);
+    ({ target: { value = "" } }) => {
+      setQueryString(value);
       deboundedChange(value);
+      onChange(value);
       if (value.trim() === "") {
         onClear();
       }
@@ -58,7 +55,7 @@ const SearchInput: FC<SearrchInputProps> = ({
   );
 
   return (
-    <div className="flex p-0">
+    <div className="flex p-0 sticky top-0 bg-white z-20">
       <input
         ref={inputRef}
         type="text"

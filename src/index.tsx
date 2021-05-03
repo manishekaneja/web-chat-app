@@ -19,6 +19,19 @@ const projectAuth = firebase.auth();
 
 const serverTimeStamp = firebase.firestore.FieldValue.serverTimestamp;
 const increment = firebase.firestore.FieldValue.increment(1);
+const arrayUnion = firebase.firestore.FieldValue.arrayUnion;
+const arrayRemove = firebase.firestore.FieldValue.arrayRemove;
+
+const userCollectionRef = projectFirestore.collection(
+  "chat-app/main-stream-data/user"
+);
+const chatroomCollectionRef = projectFirestore.collection(
+  "chat-app/main-stream-data/chat-room"
+);
+
+const userIdMapperRef = projectFirestore.collection(
+  "chat-app/main-stream-data/user-id-mapper"
+);
 
 ReactDOM.render(
   <React.StrictMode>
@@ -38,4 +51,9 @@ export {
   serverTimeStamp,
   increment,
   projectRealTime,
+  arrayRemove,
+  arrayUnion,
+  userCollectionRef,
+  chatroomCollectionRef,
+  userIdMapperRef,
 };

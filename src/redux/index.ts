@@ -15,7 +15,7 @@ const store = createStore(persistedReducer, applyMiddleware(thunk));
 
 let persistor = persistStore(store);
 store.subscribe(() => {
-  console.log(JSON.stringify(store.getState(), null, 2));
+  // console.log(JSON.stringify(store.getState(), null, 2));
 });
 export type AppDispatch = typeof store.dispatch;
 export default store;

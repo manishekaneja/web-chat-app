@@ -1,15 +1,17 @@
 import { FC } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 import { Routes } from "../../constants/Routes";
 import { DotsVerticalIcon } from "../../Icons/DotsVerticalIcon";
 import { SearchIcon } from "../../Icons/SearchIcon";
 
 const Header: FC<NoProps> = () => {
   const location = useLocation();
+  const { roomid } = useParams<{ roomid: string }>();
+  console.log(roomid);
   return (
     <div className="dark-green w-full sticky top-0 z-30">
       <div className="text-white py-4 px-2 flex">
-        <h3 className="font-medium text-2xl flex-1"> WhatsApp</h3>
+        <h3 className="font-medium text-2xl flex-1"> Chat-App</h3>
         <div className=" font-black text-2xl flex">
           <span className="inline-flex items-center justify-center w-7 ml-3">
             <SearchIcon />
@@ -56,7 +58,7 @@ const Header: FC<NoProps> = () => {
                   ? "translateX(200%)"
                   : "",
             }}
-            className="bottom-0 rounded bg-white w-2/6 absolute"
+            className="bottom-0 rounded-t to green w-2/6 absolute"
           ></div>
         )}
       </nav>

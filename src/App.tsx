@@ -8,7 +8,7 @@ function App() {
   return (
     <Provider store={store}>
       <HashRouter>
-        <div className="w-screen h-screen bg-gray-100 flex items-stretch justify-center ">
+        <div className="w-screen h-screen bg-gray-200 flex items-stretch justify-center ">
           <EntryScreen />
         </div>
       </HashRouter>

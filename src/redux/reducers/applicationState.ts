@@ -1,5 +1,5 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
-const inital$appState: Reducer$ApplicationState = {
+const inital$appState: Initial$ApplicationState = {
   isLoggedIn: false,
 };
 

@@ -1,16 +1,17 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
-const initial$user: UserInfo = {
+const initial$user: Initial$UserState = {
   id: "",
   email: "",
   name: "",
-  profile: "",
+  profilePhoto: "",
   friends: [],
   pendingRequest: [],
   sendRequest: [],
+  status: "unknown",
 };
 
 const action$setUser = createAction<
-  Pick<UserInfo, "id" | "email" | "name" | "profile"> | UserInfo
+  Pick<User, "id" | "email" | "name" | "profilePhoto"> | User
 >("user|set-user");
 const action$resetUser = createAction<null>("user|reset-user");
 

@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { Header } from "../components/header/Header";
 import { Routes } from "../constants/Routes";
-import { watchUserStateThunk } from "../redux/thunk/watchUserStateThunk";
+import { useLoginAuthWatcher } from "../hooks/useLoginAuthWatcher";
+import { useProfileWatcher } from "../hooks/useProfileWatcher";
+import ChatRoom from "./ChatRoom";
 import ContactScreen from "./ContactScreen";
 import ErrorScreen from "./ErrorScreen";
 import HomeScreen from "./HomeScreen";
@@ -11,20 +12,17 @@ import OnBoardingScreen from "./OnBoardingScreen";
 import RequestScreen from "./RequestScreen";
 
 function EntryScreen() {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(watchUserStateThunk());
-  }, [dispatch]);
+  useProfileWatcher();
+  useLoginAuthWatcher();
   const { isLoggedIn } = useSelector((state: RootState) => state.application);
-  console.log(isLoggedIn);
   return (
-    <div className="w-full  h-full flex flex-col flex-1 shadow-2xl overflow-y-auto">
-      {isLoggedIn && <Header />}
+    <div className="w-full  h-full bg-white max-w-3xl flex flex-col flex-1 shadow-2xl overflow-y-auto">
       {isLoggedIn ? (
         <Switch>
           <Route path={Routes.chat} component={HomeScreen} />
           <Route path={Routes.contact} component={ContactScreen} />
           <Route path={Routes.request} component={RequestScreen} />
+          <Route path={Routes.room + "/:roomid"} component={ChatRoom} />
           <Route path={Routes.login}>
             <Redirect from={Routes.login} to={Routes.chat} />
           </Route>

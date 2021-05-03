@@ -4,17 +4,19 @@ import { AllowedUserAction } from "./AllowedUserAction";
 
 const ViewUserProfile: FC<
   LoadingProps & {
-    data?: UserInfo;
+    path?: string;
+    data?: PublicProfile;
     currentState?: "unknown" | "friend" | "sendRequest" | "recievedRequest";
   }
-> = ({ loading = true, data = null, currentState }) => {
+> = ({ path, loading = true, data = null, currentState }) => {
   return (
     <GenericRowItem
+      path={path}
       loading={loading || !data}
       left={
         data && (
           <img
-            src={data.profile}
+            src={data.profilePhoto}
             alt={data.name}
             className="h-12 w-12 bg-gray-700 overflow-x-hidden bg-opacity-50 rounded-full shadow-sm"
           />
@@ -23,7 +25,9 @@ const ViewUserProfile: FC<
       right={
         data && (
           <Fragment>
-            <div className="flex flex-1">{data.name}</div>
+            <div className="flex flex-initial whitespace-nowrap overflow-ellipsis overflow-hidden ">
+              {data.name}
+            </div>
             <div className="flex-1"></div>
             <AllowedUserAction {...{ data, currentState }} />
           </Fragment>
