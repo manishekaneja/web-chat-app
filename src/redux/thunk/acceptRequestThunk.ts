@@ -11,11 +11,11 @@ import {
 
 const acceptRequestThunk = createAsyncThunk<void, string, { state: RootState }>(
   "thunk/acceptRequest",
-  async (emailQuery, { getState, dispatch }) => {
-    const { email } = (getState() as RootState).user;
+  async (uidQuery, { getState, dispatch }) => {
+    const { id } = (getState() as RootState).user;
 
-    const currentUserRef = userCollectionRef.doc(email);
-    const otherUserRef = userCollectionRef.doc(emailQuery);
+    const currentUserRef = userCollectionRef.doc(id);
+    const otherUserRef = userCollectionRef.doc(uidQuery);
 
     const currentUser = await currentUserRef.get();
     const otherUser = await otherUserRef.get();

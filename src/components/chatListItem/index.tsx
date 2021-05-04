@@ -11,7 +11,7 @@ const GenericRowItem: FC<
 > = ({ loading = true, path, left = null, right = null }) => {
   const history = useHistory();
   return (
-    <button
+    <div
       onClick={() => {
         if (path) {
           history.push(path);
@@ -29,7 +29,7 @@ const GenericRowItem: FC<
           <div className="flex-1 flex items-center space-y-4 py-1">{right}</div>
         </div>
       )}
-    </button>
+    </div>
   );
 };
 

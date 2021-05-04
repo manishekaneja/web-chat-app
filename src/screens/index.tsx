@@ -12,8 +12,8 @@ import OnBoardingScreen from "./OnBoardingScreen";
 import RequestScreen from "./RequestScreen";
 
 function EntryScreen() {
-  useProfileWatcher();
   useLoginAuthWatcher();
+  useProfileWatcher();
   const { isLoggedIn } = useSelector((state: RootState) => state.application);
   return (
     <div className="w-full  h-full bg-white max-w-3xl flex flex-col flex-1 shadow-2xl overflow-y-auto">

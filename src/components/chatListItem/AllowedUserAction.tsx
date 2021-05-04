@@ -25,10 +25,10 @@ export const AllowedUserAction: FC<{
   }, [currentState]);
   const dispatch = useDispatch<ThunkDispatch<RootState, void, AnyAction>>();
   const sendFriendRequest = useCallback(
-    (userEmail) => (event: React.MouseEvent<HTMLButtonElement>) => {
+    (uid) => (event: React.MouseEvent<HTMLButtonElement>) => {
       event.stopPropagation();
       setUserState("loading");
-      dispatch(sendRequestThunk(userEmail))
+      dispatch(sendRequestThunk(uid))
         .then(() => {
           setUserState("sendRequest");
         })
@@ -40,10 +40,10 @@ export const AllowedUserAction: FC<{
   );
 
   const cancelFriendRequest = useCallback(
-    (userEmail) => (event: React.MouseEvent<HTMLButtonElement>) => {
+    (uid) => (event: React.MouseEvent<HTMLButtonElement>) => {
       event.stopPropagation();
       setUserState("loading");
-      dispatch(cancelRequestThunk(userEmail))
+      dispatch(cancelRequestThunk(uid))
         .then(() => {
           setUserState("unknown");
         })
@@ -54,10 +54,10 @@ export const AllowedUserAction: FC<{
     [dispatch]
   );
   const removeFriend = useCallback(
-    (userEmail) => (event: React.MouseEvent<HTMLButtonElement>) => {
+    (uid) => (event: React.MouseEvent<HTMLButtonElement>) => {
       event.stopPropagation();
       setUserState("loading");
-      dispatch(removeFriendThunk(userEmail))
+      dispatch(removeFriendThunk(uid))
         .then(() => {
           setUserState("unknown");
         })
@@ -69,10 +69,10 @@ export const AllowedUserAction: FC<{
   );
 
   const acceptFriendRequest = useCallback(
-    (userEmail) => (event: React.MouseEvent<HTMLButtonElement>) => {
+    (uid) => (event: React.MouseEvent<HTMLButtonElement>) => {
       event.stopPropagation();
       setUserState("loading");
-      dispatch(acceptRequestThunk(userEmail))
+      dispatch(acceptRequestThunk(uid))
         .then(() => {
           setUserState("friend");
         })
@@ -83,10 +83,10 @@ export const AllowedUserAction: FC<{
     [dispatch]
   );
   const rejectFriendRequest = useCallback(
-    (userEmail) => (event: React.MouseEvent<HTMLButtonElement>) => {
+    (uid) => (event: React.MouseEvent<HTMLButtonElement>) => {
       event.stopPropagation();
       setUserState("loading");
-      dispatch(rejectRequestThunk(userEmail))
+      dispatch(rejectRequestThunk(uid))
         .then(() => {
           setUserState("unknown");
         })
@@ -102,7 +102,7 @@ export const AllowedUserAction: FC<{
       <div className=" flex flex-none">
         <button
           className="w-20 bg-green-100 text-green-800 border border-green-700 shadow-sm rounded flex items-center justify-center py-1 px-2"
-          onClick={sendFriendRequest(data.email)}
+          onClick={sendFriendRequest(data.id)}
         >
           <AddUserIcon size={25} />
         </button>
@@ -113,7 +113,7 @@ export const AllowedUserAction: FC<{
       <div className="flex flex-none ">
         <button
           className="w-20 bg-red-100 text-red-800 border border-red-700 shadow-sm rounded flex items-center justify-center py-1 px-2"
-          onClick={removeFriend(data.email)}
+          onClick={removeFriend(data.id)}
         >
           <CrossIcon size={25} />
         </button>
@@ -124,7 +124,7 @@ export const AllowedUserAction: FC<{
       <div className=" flex flex-none">
         <button
           className="w-20 bg-blue-100 text-blue-800 border border-blue-700 shadow-sm rounded flex items-center justify-center py-1 px-2"
-          onClick={cancelFriendRequest(data.email)}
+          onClick={cancelFriendRequest(data.id)}
         >
           <SendRequestIcon size={25} />
         </button>
@@ -135,13 +135,13 @@ export const AllowedUserAction: FC<{
       <div className="flex  flex-none space-x-2">
         <button
           className="w-20 bg-blue-100 text-blue-800 border border-blue-700 shadow-sm rounded flex items-center justify-center py-1 px-2"
-          onClick={acceptFriendRequest(data.email)}
+          onClick={acceptFriendRequest(data.id)}
         >
           <TickIcon size={25} />
         </button>
         <button
           className="w-20 bg-red-100 text-red-800 border border-red-700 shadow-sm rounded flex items-center justify-center py-1 px-2"
-          onClick={rejectFriendRequest(data.email)}
+          onClick={rejectFriendRequest(data.id)}
         >
           <CrossIcon size={25} />
         </button>

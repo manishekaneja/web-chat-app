@@ -8,12 +8,11 @@ function useProfileWatcher() {
   const dispatch = useDispatch();
 
   const { isLoggedIn } = useSelector((state: RootState) => state.application);
-  const { id } = useSelector((state: RootState) => state.user);
-
+  const user = useSelector((state: RootState) => state.user);
+  const { id } = user;
   useEffect(() => {
     let unsubscribeUserDetails: (() => void) | null = null;
-    console.log(id);
-    if (isLoggedIn && id) {
+    if (isLoggedIn && id && typeof id === "string" && id.trim()!=="" ) {
       unsubscribeUserDetails = userCollectionRef
         .doc(id)
         .onSnapshot({ includeMetadataChanges: true }, (userObject) => {
@@ -31,6 +30,7 @@ function useProfileWatcher() {
               profilePhoto: "",
               ...userObject.data(),
             };
+            console.log(userData);
             const searchMap: Record<
               string,
               "friend" | "recievedRequest" | "sendRequest"

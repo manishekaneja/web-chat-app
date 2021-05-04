@@ -1,13 +1,13 @@
 import { FC } from "react";
-import { NavLink, useLocation, useParams } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { Routes } from "../../constants/Routes";
-import { DotsVerticalIcon } from "../../Icons/DotsVerticalIcon";
+import { useFirebaseLogin } from "../../hooks/useFirebaseLogin";
+import { LogoutIcon } from "../../Icons/LogoutIcon";
 import { SearchIcon } from "../../Icons/SearchIcon";
 
 const Header: FC<NoProps> = () => {
   const location = useLocation();
-  const { roomid } = useParams<{ roomid: string }>();
-  console.log(roomid);
+  const { signOut } = useFirebaseLogin();
   return (
     <div className="dark-green w-full sticky top-0 z-30">
       <div className="text-white py-4 px-2 flex">
@@ -16,9 +16,12 @@ const Header: FC<NoProps> = () => {
           <span className="inline-flex items-center justify-center w-7 ml-3">
             <SearchIcon />
           </span>
-          <span className="inline-flex items-center justify-center w-7 ml-3">
-            <DotsVerticalIcon />
-          </span>
+          <button
+            onClick={signOut}
+            className="inline-flex items-center justify-center w-7 ml-3 focus:outline-none "
+          >
+            <LogoutIcon />
+          </button>
         </div>
       </div>
       <nav className="text-white flex text-xs relative">

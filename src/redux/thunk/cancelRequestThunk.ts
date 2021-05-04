@@ -2,14 +2,14 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { arrayRemove, projectFirestore } from "../..";
 const cancelRequestThunk = createAsyncThunk<void, string, { state: RootState }>(
   "thunk/cancelRequest",
-  async (emailQuery, { getState, dispatch }) => {
-    const { email } = (getState() as RootState).user;
+  async (uidQuery, { getState, dispatch }) => {
+    const { id } = (getState() as RootState).user;
     const userCollectionRef = projectFirestore.collection(
       "chat-app/main-stream-data/user"
     );
 
-    const currentUserRef = userCollectionRef.doc(email);
-    const otherUserRef = userCollectionRef.doc(emailQuery);
+    const currentUserRef = userCollectionRef.doc(id);
+    const otherUserRef = userCollectionRef.doc(uidQuery);
 
     const currentUser = await currentUserRef.get();
     const otherUser = await otherUserRef.get();

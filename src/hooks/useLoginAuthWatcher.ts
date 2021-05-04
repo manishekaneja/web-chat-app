@@ -7,7 +7,10 @@ import {
   userCollectionRef,
   userIdMapperRef,
 } from "..";
-import { action$login } from "../redux/reducers/applicationState";
+import {
+  action$login,
+  action$logout,
+} from "../redux/reducers/applicationState";
 import { action$resetUser, action$setUser } from "../redux/reducers/user";
 
 function useLoginAuthWatcher() {
@@ -25,17 +28,17 @@ function useLoginAuthWatcher() {
 
           // Fetch Id from DB.
           const userMapperObject = await userMapperRef.get();
+          const userData: FirestoreUser = {
+            id: nanoid(),
+            email: user.email,
+            friends: [],
+            pendingRequest: [],
+            sendRequest: [],
+            name: user.displayName || "",
+            profilePhoto: user.photoURL || "",
+          };
+          console.log(userData, userMapperObject.exists);
           if (!userMapperObject.exists) {
-            const userData: FirestoreUser = {
-              id: nanoid(),
-              email: user.email,
-              friends: [],
-              pendingRequest: [],
-              sendRequest: [],
-              name: user.displayName || "",
-              profilePhoto: user.photoURL || "",
-            };
-
             const userDocumentRef = userCollectionRef.doc(userData.id);
 
             // Creating Batch Request
@@ -48,12 +51,15 @@ function useLoginAuthWatcher() {
             });
 
             await batch.commit();
-
-            dispatch(action$setUser(userData));
+          } else {
+            console.log(userMapperObject, userData);
+            userData.id = (userMapperObject.data() as { id: string }).id;
           }
+          dispatch(action$setUser(userData));
           dispatch(action$login(null));
         } else {
           dispatch(action$resetUser(null));
+          dispatch(action$logout(null));
         }
       }
     );
