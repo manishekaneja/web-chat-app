@@ -1,5 +1,7 @@
 import moment from "moment";
 import { FC } from "react";
+import { ClockIcon } from "../../Icons/ClockIcon";
+import { TickIcon } from "../../Icons/TickIcon";
 
 const MessageBox: FC<{
   timestamp: Date;
@@ -32,12 +34,11 @@ const MessageBox: FC<{
                 {message}
               </p>
             </div>
-            <div className="flex-1 max-w-full text-gray-600 font-normal text-xs flex justify-end">
-              <p>
-                {direction === "right" && (
-                  <span> {sent ? "Sending..." : "Sent"} </span>
-                )}
-              </p>
+            <div className="flex-1 max-w-full text-gray-600 font-normal text-xs flex justify-end items-center">
+              <span className="font-bold">
+                {direction === "right" &&
+                  (sent ? <ClockIcon size={12} /> : <TickIcon strokeWidth="2.5" size={12} />)}
+              </span>
               <p className="inline-flex flex-1 w-3"></p>
               <p>
                 <span>{moment(timestamp).format("hh:mm A")}</span>

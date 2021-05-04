@@ -24,7 +24,7 @@ const MessageInput: FC<{ onSubmit: (value: string) => void }> = ({
         ref={inputRef}
         type="text"
         value={queryString}
-        onChange={({ target: { value } }) => setQueryString(value.trim())}
+        onChange={({ target: { value } }) => setQueryString(value)}
         className="flex-1 h-14 rounded-full px-5 bg-opacity-50 w-full border-b shadow border-gray-300 tracking-wide font-normal "
         placeholder="Enter message here"
       />

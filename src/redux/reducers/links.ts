@@ -9,7 +9,9 @@ const action$setLink = createAction<
 const reducer$link = createReducer(initial$link, (builder) => {
   builder.addCase(action$setLink, (state, action) => ({
     ...state,
-    ...action.payload,
+    records:{
+      ...action.payload,
+    }
   }));
 });
 

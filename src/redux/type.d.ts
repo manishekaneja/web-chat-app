@@ -9,8 +9,14 @@ type Initial$LinkState = {
     "unknown" | "friend" | "sendRequest" | "recievedRequest"
   >;
 };
+type Initial$ChatHistory = {
+  history: ChatHistory[];
+  loading: boolean;
+};
+
 type RootState = {
   user: Initial$UserState;
   application: Initial$ApplicationState;
   link: Initial$LinkState;
+  history: Initial$ChatHistory;
 };

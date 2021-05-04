@@ -7,14 +7,18 @@ const GenericRowItem: FC<
     path?: string;
     right?: React.ReactNode;
     left?: React.ReactNode;
+    state?: Pick<ChatHistory, "alias" | "roomPhoto" | "createdBy" | "members">;
   }
-> = ({ loading = true, path, left = null, right = null }) => {
+> = ({ loading = true, state, path, left = null, right = null }) => {
   const history = useHistory();
   return (
     <div
       onClick={() => {
         if (path) {
-          history.push(path);
+          history.push({
+            pathname: path,
+            state: state,
+          });
         }
       }}
       className="px-2 py-1 w-full border-b border-gray-300 "

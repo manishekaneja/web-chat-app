@@ -10,9 +10,9 @@ import { AtIcon } from "../Icons/AtIcon";
 import { getUserInfoThunk } from "../redux/thunk/getUserInfoThunk";
 
 const ContactDefaultLayout = () => (
-  <div className="flex items-center justify-end flex-col h-96">
-    <h3 className="text-green-900 opacity-70 mb-10">
-      <AtIcon size={150} />
+  <div className="flex items-center justify-center opacity-40 flex-col h-96">
+    <h3 className="text-green-900 opacity-70">
+      <AtIcon size={100} />
     </h3>
     <p className="text-center text-green-900 opacity-70 font-bold">
       Search For a Contact Here
@@ -25,19 +25,12 @@ const ContactScreen: FC<NoProps> = () => {
   const dispatch = useDispatch<ThunkDispatch<RootState, void, AnyAction>>();
   useEffect(() => {
     dispatch(getUserInfoThunk());
-}, [dispatch]);
+  }, [dispatch]);
   const { isLoggedIn } = useSelector((state: RootState) => state.application);
-  const { id } = useSelector((state: RootState) => state.user);
-  const genrateID = useCallback((id1, id2) => {
-    if (!id1 || !id2) {
-      return "";
-    } else {
-      return id1 > id2 ? id1 + id2 : id2 + id1;
-    }
-  }, []);
-
   const renderFriendsList = useCallback(
-    (friends: PublicProfile[]) => (showDefault: boolean) => {
+    (friends: Array<PublicProfile & { roomId?: string }>) => (
+      showDefault: boolean
+    ) => {
       if (friends.length <= 0 && showDefault) {
         return <ContactDefaultLayout />;
       }
@@ -52,7 +45,7 @@ const ContactScreen: FC<NoProps> = () => {
               </div>
               {friends.map((singlePerson) => (
                 <ViewUserProfile
-                  path={`${Routes.room}/${genrateID(singlePerson.id, id)}`}
+                  path={`${Routes.room}/${singlePerson.roomId}`}
                   key={singlePerson.id}
                   loading={false}
                   currentState="friend"
@@ -64,12 +57,12 @@ const ContactScreen: FC<NoProps> = () => {
         </>
       );
     },
-    [genrateID, id]
+    []
   );
 
   return (
     <>
-      {isLoggedIn && <Header />}
+      {isLoggedIn && <Header title="Contacts | Chat-App " />}
 
       <SearchSection rendererFunc={renderFriendsList(friends)} />
     </>

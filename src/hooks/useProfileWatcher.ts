@@ -30,7 +30,6 @@ function useProfileWatcher() {
               profilePhoto: "",
               ...userObject.data(),
             };
-            console.log(userData);
             const searchMap: Record<
               string,
               "friend" | "recievedRequest" | "sendRequest"

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { nanoid } from "nanoid";
+import _ from "lodash";
 import {
   arrayRemove,
   arrayUnion,
@@ -8,7 +8,6 @@ import {
   serverTimeStamp,
   userCollectionRef,
 } from "../..";
-
 const acceptRequestThunk = createAsyncThunk<void, string, { state: RootState }>(
   "thunk/acceptRequest",
   async (uidQuery, { getState, dispatch }) => {
@@ -27,34 +26,21 @@ const acceptRequestThunk = createAsyncThunk<void, string, { state: RootState }>(
     const currentUserData = currentUser.data() as PublicProfile;
     const otherUserData = otherUser.data() as PublicProfile;
 
-    let chatRoomId = nanoid();
-    let alreadyHaveARooom = false;
-
-    const existingRoom = await chatroomCollectionRef
-      .where("members", "array-contains", [
-        currentUserData.email,
-        otherUserData.email,
-      ])
-      .get();
-
-    existingRoom.forEach((doc) => {
-      alreadyHaveARooom = doc.exists;
-      chatRoomId = doc.data().id;
-    });
-
+    let chatRoomId = "";
     const batch = projectFirestore.batch();
     batch.update(currentUserRef, {
       pendingRequest: arrayRemove({
         email: otherUserData.email,
         id: otherUserData.id,
         name: otherUserData.name,
-        profile: otherUserData.profilePhoto,
+        profilePhoto: otherUserData.profilePhoto,
       }),
       friends: arrayUnion({
         email: otherUserData.email,
         id: otherUserData.id,
         name: otherUserData.name,
-        profile: otherUserData.profilePhoto,
+        profilePhoto: otherUserData.profilePhoto,
+        roomId: chatRoomId,
       }),
     });
     batch.update(otherUserRef, {
@@ -62,29 +48,46 @@ const acceptRequestThunk = createAsyncThunk<void, string, { state: RootState }>(
         email: currentUserData.email,
         id: currentUserData.id,
         name: currentUserData.name,
-        profile: currentUserData.profilePhoto,
+        profilePhoto: currentUserData.profilePhoto,
       }),
       friends: arrayUnion({
         email: currentUserData.email,
         id: currentUserData.id,
         name: currentUserData.name,
-        profile: currentUserData.profilePhoto,
+        profilePhoto: currentUserData.profilePhoto,
+        roomId: chatRoomId,
       }),
     });
     const chatroomRef = chatroomCollectionRef.doc(chatRoomId);
-    if (!alreadyHaveARooom) {
-      batch.set(chatroomRef, {
-        id: chatRoomId,
-        members: [currentUserData.email, otherUserData.email],
-        createdBy: "system",
-        creatdedAt: serverTimeStamp(),
-        active: true,
-      });
-    } else {
-      batch.update(chatroomRef, {
-        active: true,
-      });
-    }
+
+    const chatRoomData: ChatRoom = {
+      id: chatRoomId,
+      members: _.sortBy(
+        [
+          {
+            email: currentUserData.email,
+            id: currentUserData.id,
+            name: currentUserData.name,
+            profilePhoto: currentUserData.profilePhoto,
+          },
+          {
+            email: otherUserData.email,
+            id: otherUserData.id,
+            name: otherUserData.name,
+            profilePhoto: otherUserData.profilePhoto,
+          },
+        ],
+        "email"
+      ),
+      createdBy: "system",
+      // @ts-ignore
+      creatdedAt: serverTimeStamp(),
+      // @ts-ignore
+      updatedAt: serverTimeStamp(),
+      active: true,
+      membersCount: 2,
+    };
+    batch.set(chatroomRef, chatRoomData);
     await batch.commit();
     return;
   }

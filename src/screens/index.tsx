@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Routes } from "../constants/Routes";
+import useChatHistoryWatcher from "../hooks/useChatHistoryWatcher";
 import { useLoginAuthWatcher } from "../hooks/useLoginAuthWatcher";
 import { useProfileWatcher } from "../hooks/useProfileWatcher";
 import ChatRoom from "./ChatRoom";
@@ -14,6 +15,8 @@ import RequestScreen from "./RequestScreen";
 function EntryScreen() {
   useLoginAuthWatcher();
   useProfileWatcher();
+  useChatHistoryWatcher();
+
   const { isLoggedIn } = useSelector((state: RootState) => state.application);
   return (
     <div className="w-full  h-full bg-white max-w-3xl flex flex-col flex-1 shadow-2xl overflow-y-auto">

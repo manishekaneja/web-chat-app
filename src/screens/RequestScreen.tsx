@@ -9,7 +9,7 @@ import { AddUserIcon } from "../Icons/AddUserIcon";
 import { getUserInfoThunk } from "../redux/thunk/getUserInfoThunk";
 
 const RequestDefaultLayout = () => (
-  <div className="flex items-center justify-end flex-col h-96">
+  <div className="text-green-900 opacity-20 flex items-center justify-end flex-col h-96">
     <h3 className="text-green-900 opacity-70 mb-10">
       <AddUserIcon size={100} />
     </h3>
@@ -79,7 +79,7 @@ const RequestScreen: FC<NoProps> = () => {
   );
   return (
     <>
-      {isLoggedIn && <Header />}
+      {isLoggedIn && <Header title="Requests | Chat-App" />}
 
       <SearchSection
         rendererFunc={renderRequestView(pendingRequest, sendRequest)}

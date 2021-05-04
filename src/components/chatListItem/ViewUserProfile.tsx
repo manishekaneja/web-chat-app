@@ -12,6 +12,12 @@ const ViewUserProfile: FC<
   return (
     <GenericRowItem
       path={path}
+      state={{
+        alias: data ? data.name : "",
+        roomPhoto: data ? data.profilePhoto : "",
+        createdBy: data ? "system" : "",
+        members: data ? [data] : [],
+      }}
       loading={loading || !data}
       left={
         data && (

@@ -9,13 +9,11 @@ import { LoadingListPlaceholder } from "../loading/LoadingListPlaceholder";
 import SearchInput from "../search/SearchInput";
 
 const NotFoundLayout = () => (
-  <div className="flex items-center justify-center flex-col h-96">
-    <h3 className="text-green-900 opacity-70 mb-10">
+  <div className="text-green-900 opacity-20 flex-col flex items-center justify-center h-96">
+    <h3 className="text-green-900 opacity-70">
       <CrossIcon size={100} />
     </h3>
-    <p className="text-center text-green-900 opacity-70 font-bold">
-      Can't find the results you are searching for
-    </p>
+    <p className="font-semibold">Can't find the results</p>
   </div>
 );
 

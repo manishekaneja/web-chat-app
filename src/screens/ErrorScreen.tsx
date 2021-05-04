@@ -1,10 +1,14 @@
 import { FC, Fragment } from "react";
+import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { ErrorIcon } from "../Icons/ErrorIcon";
-
 const ErrorScreen: FC<NoProps> = () => {
   return (
     <Fragment>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>505 Error | Chat-App </title>
+      </Helmet>
       <div className=" w-full h-full flex items-center justify-center max-h-96">
         <div className="flex flex-col items-center justify-center">
           <div>

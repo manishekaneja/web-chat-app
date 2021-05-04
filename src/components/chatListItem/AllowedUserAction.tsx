@@ -30,7 +30,7 @@ export const AllowedUserAction: FC<{
       setUserState("loading");
       dispatch(sendRequestThunk(uid))
         .then(() => {
-          setUserState("sendRequest");
+          setUserState(null);
         })
         .catch(() => {
           setUserState("unknown");
@@ -45,7 +45,7 @@ export const AllowedUserAction: FC<{
       setUserState("loading");
       dispatch(cancelRequestThunk(uid))
         .then(() => {
-          setUserState("unknown");
+          setUserState(null);
         })
         .catch(() => {
           setUserState("sendRequest");
@@ -59,7 +59,7 @@ export const AllowedUserAction: FC<{
       setUserState("loading");
       dispatch(removeFriendThunk(uid))
         .then(() => {
-          setUserState("unknown");
+          setUserState(null);
         })
         .catch(() => {
           setUserState("friend");
@@ -74,7 +74,7 @@ export const AllowedUserAction: FC<{
       setUserState("loading");
       dispatch(acceptRequestThunk(uid))
         .then(() => {
-          setUserState("friend");
+          setUserState(null);
         })
         .catch(() => {
           setUserState("sendRequest");
@@ -88,7 +88,7 @@ export const AllowedUserAction: FC<{
       setUserState("loading");
       dispatch(rejectRequestThunk(uid))
         .then(() => {
-          setUserState("unknown");
+          setUserState(null);
         })
         .catch(() => {
           setUserState("sendRequest");

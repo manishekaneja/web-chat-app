@@ -26,7 +26,7 @@ const rejectRequestThunk = createAsyncThunk<void, string, { state: RootState }>(
         email: otherUserData.email,
         id: otherUserData.id,
         name: otherUserData.name,
-        profile: otherUserData.profilePhoto,
+        profilePhoto: otherUserData.profilePhoto,
       }),
     });
     batch.update(otherUserRef, {
@@ -34,7 +34,7 @@ const rejectRequestThunk = createAsyncThunk<void, string, { state: RootState }>(
         email: currentUserData.email,
         id: currentUserData.id,
         name: currentUserData.name,
-        profile: currentUserData.profilePhoto,
+        profilePhoto: currentUserData.profilePhoto,
       }),
     });
     await batch.commit();

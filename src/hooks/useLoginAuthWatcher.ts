@@ -37,7 +37,6 @@ function useLoginAuthWatcher() {
             name: user.displayName || "",
             profilePhoto: user.photoURL || "",
           };
-          console.log(userData, userMapperObject.exists);
           if (!userMapperObject.exists) {
             const userDocumentRef = userCollectionRef.doc(userData.id);
 
@@ -52,7 +51,6 @@ function useLoginAuthWatcher() {
 
             await batch.commit();
           } else {
-            console.log(userMapperObject, userData);
             userData.id = (userMapperObject.data() as { id: string }).id;
           }
           dispatch(action$setUser(userData));
